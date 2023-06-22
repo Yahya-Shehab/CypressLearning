@@ -1,6 +1,10 @@
 class EditorPageActions {
-  openEditorPage() {
-    cy.visit("#/editor");
+  openEditorPage(slug?: string) {
+    cy.intercept("GET", "https://api.realworld.io/api/articles/**").as(
+      "EditorAPI"
+    );
+    cy.visit(`#/editor/${slug ? slug : ""}`);
+    slug && cy.wait("@EditorAPI");
     return this;
   }
 
