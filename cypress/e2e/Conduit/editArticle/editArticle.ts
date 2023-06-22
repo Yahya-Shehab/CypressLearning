@@ -28,9 +28,9 @@ Given("The system has an article", () => {
 });
 
 When("Open editor page for the article and edit description", () => {
-  editorPageActions.openEditorPage(slug);
-  cy.wait("@EditorAPI");
-  editorPageActions.typeInDescriptionInputField(newDescription);
+  editorPageActions
+    .openEditorPage(slug)
+    .typeInDescriptionInputField(newDescription);
 });
 
 When("Click on publish article", () => {

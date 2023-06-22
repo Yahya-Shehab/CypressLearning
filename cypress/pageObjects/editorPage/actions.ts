@@ -4,6 +4,7 @@ class EditorPageActions {
       "EditorAPI"
     );
     cy.visit(`#/editor/${slug ? slug : ""}`);
+    slug && cy.wait("@EditorAPI");
     return this;
   }
 
