@@ -15,3 +15,11 @@ export interface ArticleResponse {
   title: string;
   updatedAt: string;
 }
+
+export interface UserResponse {
+  email: string;
+  username: string;
+  bio: null;
+  image: string;
+  token: string;
+}

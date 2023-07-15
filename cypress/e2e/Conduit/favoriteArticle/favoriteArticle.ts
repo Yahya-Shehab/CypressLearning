@@ -3,6 +3,7 @@ import SharedDataUtils from "@pageObjects/dataUtils";
 import HomePageActions from "@pageObjects/homePage/actions";
 import TopNavActions from "@pageObjects/topNav/actions";
 import UserPageAssertions from "@pageObjects/userPage/assertions";
+import { GetAPIPrefix } from "@support/commands";
 import { NewArticle, NewUser } from "@support/createDataTypes";
 import moment from "moment";
 
@@ -45,7 +46,7 @@ Given("That user likes the admin's article", () => {
 });
 
 When("The admin user opens the article page for that article", () => {
-  cy.intercept("GET", "https://api.realworld.io/api/user").as("user");
+  cy.intercept("GET", GetAPIPrefix("user")).as("user");
   cy.login();
   homePageActions.openHomePage();
   cy.wait("@user");
