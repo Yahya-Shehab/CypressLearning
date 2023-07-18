@@ -3,8 +3,6 @@ import SharedDataUtils from "@pageObjects/dataUtils";
 import { NewUser } from "@support/createDataTypes";
 import moment from "moment";
 
-// username: CypressUserY-01 | email: CypressUserY-01@test.com | password: 123
-
 const sharedDataUtils = new SharedDataUtils();
 
 const user: NewUser = {
@@ -18,5 +16,5 @@ Given("Logout from conduit account", () => {
 });
 
 When("Request user API to create user", () => {
-  sharedDataUtils.createUser(user);
+  sharedDataUtils.createUser(user).then((res) => console.log(res.email));
 });

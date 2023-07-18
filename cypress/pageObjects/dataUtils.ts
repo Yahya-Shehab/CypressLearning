@@ -1,7 +1,7 @@
 import { GetAPIPrefix } from "@support/commands";
 import { createNewArticleBody, createNewUserBody } from "@support/constants";
 import { NewArticle, NewUser } from "@support/createDataTypes";
-import { ArticleResponse } from "@support/types";
+import { ArticleResponse, UserResponse } from "@support/types";
 
 class SharedDataUtils {
   createArticle(article: NewArticle): Cypress.Chainable<string> {
@@ -15,12 +15,14 @@ class SharedDataUtils {
       .then((response) => response.body.article.slug);
   }
 
-  createUser(user: NewUser) {
-    cy.request({
-      method: "POST",
-      url: GetAPIPrefix("users"),
-      body: createNewUserBody(user),
-    });
+  createUser(user: NewUser): Cypress.Chainable<UserResponse> {
+    return cy
+      .request({
+        method: "POST",
+        url: GetAPIPrefix("users"),
+        body: createNewUserBody(user),
+      })
+      .then((response) => response.body.user);
   }
 
   getAllTags(): Cypress.Chainable<string[]> {
@@ -83,6 +85,24 @@ class SharedDataUtils {
       headers: { authorization: `Token ${localStorage.getItem("jwt")}` },
     }).then((res) => {
       console.log(res.body.article.favorited);
+    });
+  }
+
+  favoriteArticlesList(author: string): Cypress.Chainable<string> {
+    return cy
+      .request({
+        method: "GET",
+        url: GetAPIPrefix(`articles?favorited=${author}&limit=5&offset=0`),
+        headers: { authorization: `Token ${localStorage.getItem("jwt")}` },
+      })
+      .then((response) => response.body.articles[0].title);
+  }
+
+  followAccount() {
+    cy.request({
+      method: "POST",
+      url: GetAPIPrefix("profiles/Anah%20Bene%C5%A1ov%C3%A1/follow"),
+      headers: { authorization: `Token ${localStorage.getItem("jwt")}` },
     });
   }
 }
