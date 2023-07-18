@@ -4,3 +4,9 @@ export interface NewArticle {
   description: string;
   tagList?: string[];
 }
+
+export interface NewUser {
+  username: string;
+  email: string;
+  password: string;
+}

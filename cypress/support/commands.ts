@@ -21,6 +21,7 @@ declare global {
 Cypress.Commands.add(
   "login",
   (email = "yahyaadmin@admin.com", password = "123") => {
+    cy.logout();
     cy.request("POST", "https://api.realworld.io/api/users/login", {
       user: { email, password },
     }).then((res) => {

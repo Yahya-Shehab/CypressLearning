@@ -1,6 +1,6 @@
 import { GetAPIPrefix } from "@support/commands";
-import { createNewArticleBody } from "@support/constants";
-import { NewArticle } from "@support/createDataTypes";
+import { createNewArticleBody, createNewUserBody } from "@support/constants";
+import { NewArticle, NewUser } from "@support/createDataTypes";
 import { ArticleResponse } from "@support/types";
 
 class SharedDataUtils {
@@ -13,6 +13,14 @@ class SharedDataUtils {
         headers: { authorization: `Token ${localStorage.getItem("jwt")}` },
       })
       .then((response) => response.body.article.slug);
+  }
+
+  createUser(user: NewUser) {
+    cy.request({
+      method: "POST",
+      url: GetAPIPrefix("users"),
+      body: createNewUserBody(user),
+    });
   }
 
   getAllTags(): Cypress.Chainable<string[]> {
@@ -56,6 +64,26 @@ class SharedDataUtils {
       (articles) =>
         articles.filter((article) => article.title === title)[0] || null
     );
+  }
+
+  setArticleAsFavoritePost(slug: string) {
+    cy.request({
+      method: "POST",
+      url: GetAPIPrefix(`articles/${slug}/favorite`),
+      headers: { authorization: `Token ${localStorage.getItem("jwt")}` },
+    }).then((res) => {
+      console.log(res.body.article.favorited);
+    });
+  }
+
+  deleteArticleFromFavoriteList(slug: string) {
+    cy.request({
+      method: "DELETE",
+      url: GetAPIPrefix(`articles/${slug}/favorite`),
+      headers: { authorization: `Token ${localStorage.getItem("jwt")}` },
+    }).then((res) => {
+      console.log(res.body.article.favorited);
+    });
   }
 }
 
